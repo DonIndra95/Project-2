@@ -16,7 +16,7 @@ const getCollege = async function (req, res) {
   try {
     let collegeName = req.query.collegeName
     //validation start
-    if (!collegeName) return res.status(400).send({ status: false, msg: `Please enter collegeName in query` })
+    if (!collegeName|| collegeName.trim().length==0) return res.status(400).send({ status: false, msg: `Please enter collegeName in query` })
 
     collegeName=collegeName.toLowerCase()
 
@@ -33,12 +33,7 @@ const getCollege = async function (req, res) {
       return res.status(200).send({ status: true, data:thisCollege})
     }
 
-    let interns = [];
-    
-    for (let i = 0; i < internsofCollege.length; i++) {
-      interns.push(internsofCollege[i]);
-    }
-    thisCollege._doc.interns = interns;
+    thisCollege._doc.interns = internsofCollege;
     delete thisCollege._doc._id;
     
     res.status(200).send({ status: true, data: thisCollege });
